@@ -58,15 +58,26 @@ class projectiles :public base
 protected:
     CircleShape big;
     ConvexShape small;
+    zone z;
+    float px, py,reset;
 public:
-    projectiles():big(25.f, 3)
+    projectiles(float x, float y):big(25.f, 3),px(x),py(y)
     {
-        big.setOrigin(Vector2f(1280 / 2, 720 / 2));
         big.setFillColor(Color::Yellow);
         big.setRotation(degrees(180.f));
+        reset = 770;
     }
-    void move(RenderWindow& window,bool a = true)
+    void attack(RenderWindow& window)
     {
+        if (py < z.get_zone_bottom_limit())
+        {
+            py += 4;
+        }
+        else
+        {
+            py = reset;
+        }
+        big.setPosition(Vector2f(px, py));
         window.draw(big);
     }
 };
@@ -74,7 +85,8 @@ class enemy :public base
 {
 protected:
     RectangleShape boss;
-    bool move_left = false; zone z;
+    bool move_left = false,attack = false; zone z;
+    
 public:
     enemy()
     {
@@ -85,6 +97,7 @@ public:
     }
     void move(RenderWindow& window)override
     {
+        projectiles p{ posx+76,posy+150 };
         if(move_left == false)
         {
             posx += 3.5;
@@ -106,6 +119,8 @@ public:
         window.draw(boss);
         cout << posx << "|" << posy << endl;
     }
+    float get_boss_x() { return posx; }
+    float get_boss_y() { return posy; }
 };
 class player :public base
 {
@@ -159,7 +174,7 @@ public:
 int main()
 {
     RenderWindow window(VideoMode({ 1280, 720 }), "SFML works!");
-    enemy e; zone z; player p; projectiles v;
+    enemy e; zone z; player p; projectiles v(600, 300);
     while (window.isOpen())
     {
         while (const optional event = window.pollEvent())
@@ -172,7 +187,6 @@ int main()
         e.move(window);
         z.draw_zone(window);
         p.move(window);
-        v.move(window);
         window.display();
     }
 }
