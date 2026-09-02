@@ -60,12 +60,14 @@ protected:
     ConvexShape small;
     zone z;
     float px, py,reset;
+    bool del;
 public:
     projectiles(float x, float y):big(25.f, 3),px(x),py(y)
     {
         big.setFillColor(Color::Yellow);
         big.setRotation(degrees(180.f));
         reset = 770;
+        del = false;
     }
     void attack(RenderWindow& window)
     {
@@ -187,7 +189,7 @@ int main()
         e.move(window);
         z.draw_zone(window);
         p.move(window);
-        v.attack(window);
+     
         window.display();
     }
 }
