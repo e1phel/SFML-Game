@@ -174,7 +174,7 @@ public:
 int main()
 {
     RenderWindow window(VideoMode({ 1280, 720 }), "SFML works!");
-    enemy e; zone z; player p; projectiles v(600, 300);
+    enemy e; zone z; player p; projectiles v(e.get_boss_x()+76,e.get_boss_y()+150);
     while (window.isOpen())
     {
         while (const optional event = window.pollEvent())
@@ -187,6 +187,7 @@ int main()
         e.move(window);
         z.draw_zone(window);
         p.move(window);
+        v.attack(window);
         window.display();
     }
 }
