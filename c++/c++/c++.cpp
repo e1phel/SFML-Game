@@ -56,7 +56,7 @@ public:
 class projectiles :public base
 {
 protected:
-    CircleShape big;
+    CircleShape big ;
     ConvexShape small;
     zone z;
     float px, py,reset;
@@ -189,7 +189,7 @@ int main()
         e.move(window);
         z.draw_zone(window);
         p.move(window);
-     
+        v.attack(window);
         window.display();
     }
 }
